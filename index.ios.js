@@ -35,6 +35,16 @@ var DailyPuzzle = React.createClass({
     return {isShowingSolution: false};
   },
   render: function() {
+    if (this.state.isShowingSolution) {
+      return (<SolutionView onQuestionPress={() => {this.setState({isShowingSolution: !this.state.isShowingSolution})}}/>);
+    } else {
+      return (<QuestionView onSolutionPress={() => {this.setState({isShowingSolution: !this.state.isShowingSolution})}} />);
+    }
+  }
+});
+
+var QuestionView = React.createClass({
+  render: function() {
     return (
       <View style={styles.outer}>
         <View style={styles.container}>
@@ -45,13 +55,40 @@ var DailyPuzzle = React.createClass({
             {prettyDate(PUZZLE_DATA[0].date)}
           </Text>
           <Text style={styles.text}>
-            {this.state.isShowingSolution ? PUZZLE_DATA[0].solution : PUZZLE_DATA[0].text}
+            {PUZZLE_DATA[0].text}
           </Text>
         </View>
-        <TouchableOpacity onPress={() => {this.setState({isShowingSolution: !this.state.isShowingSolution})}}>
-          <View style={styles.footer}> 
+        <TouchableOpacity onPress={this.props.onSolutionPress}>
+          <View style={styles.footer}>
             <Text style={styles.instructions}>
-              {this.state.isShowingSolution ? 'QUESTION' : 'SOLUTION'}
+              {'SOLUTION'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+});
+
+var SolutionView = React.createClass({
+  render: function() {
+    return (
+      <View style={styles.outer}>
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            {PUZZLE_DATA[0].title}
+          </Text>
+          <Text style={styles.date}>
+            {prettyDate(PUZZLE_DATA[0].date)}
+          </Text>
+          <Text style={styles.text}>
+            {PUZZLE_DATA[0].solution}
+          </Text>
+        </View>
+        <TouchableOpacity onPress={this.props.onQuestionPress}>
+          <View style={styles.footer}>
+            <Text style={styles.instructions}>
+              {'QUESTION'}
             </Text>
           </View>
         </TouchableOpacity>
