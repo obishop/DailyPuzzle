@@ -15,6 +15,7 @@ var {
   AppRegistry,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } = React;
 
@@ -30,6 +31,9 @@ var prettyDate = function (unixtime) {
 };
 
 var DailyPuzzle = React.createClass({
+  getInitialState: function() {
+    return {isShowingSolution: false};
+  },
   render: function() {
     return (
       <View style={styles.outer}>
@@ -41,15 +45,16 @@ var DailyPuzzle = React.createClass({
             {prettyDate(PUZZLE_DATA[0].date)}
           </Text>
           <Text style={styles.text}>
-            {PUZZLE_DATA[0].text}
+            {this.state.isShowingSolution ? PUZZLE_DATA[0].solution : PUZZLE_DATA[0].text}
           </Text>
         </View>
-        <View style={styles.footer}>
-          <Text style={styles.instructions}>
-            {'<-'} for more puzzles,{'\n'}
-            Swipe up for the solution.
-          </Text>
-        </View>
+        <TouchableOpacity onPress={() => {this.setState({isShowingSolution: !this.state.isShowingSolution})}}>
+          <View style={styles.footer}> 
+            <Text style={styles.instructions}>
+              {this.state.isShowingSolution ? 'QUESTION' : 'SOLUTION'}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -69,7 +74,7 @@ var styles = StyleSheet.create({
   footer: {
     justifyContent: 'center',
     alignItems: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: '#CFCFCF',
     padding: 20,
   },
   title: {
@@ -90,8 +95,9 @@ var styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'left',
-    color: '#333333',
-    marginBottom: 5,
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
 
